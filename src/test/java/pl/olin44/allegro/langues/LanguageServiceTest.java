@@ -16,25 +16,26 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(classes = {LanguageService.class, RestTemplateBeanConfiguration.class, ExternalSource.class})
 class LanguageServiceTest {
 
+    public static final String TEST_USER_NAME = "userName";
     @Mock
     private RestTemplate restTemplate;
 
     @Test
     void getLanguageSortedByByteSize() {
         ExternalSource<RepositoryLanguageDetails> languageSource = new ExternalSource<>(restTemplate);
-        when(restTemplate.getForEntity(ExternalSource.ALLEGRO_REPOS_URL, RepositoryLanguageDetails[].class))
+        when(restTemplate.getForEntity(ExternalSource.REPOS_URL_TEMPLATE.formatted(TEST_USER_NAME), RepositoryLanguageDetails[].class))
                 .thenReturn(createResponseEntity());
         LanguageService languageService = new LanguageService(languageSource);
-        List<LanguageCodeBaseSize> languageCodeBaseSizes = languageService.getLanguageSortedByByteSize();
+        List<LanguageCodeBaseSizeResponse> languageCodeBaseSizeResponses = languageService.getLanguageSortedByByteSize(TEST_USER_NAME);
 
-        assertEquals(languageCodeBaseSizes, createExpectedResponse());
+        assertEquals(languageCodeBaseSizeResponses, createExpectedResponse());
     }
 
-    private List<LanguageCodeBaseSize> createExpectedResponse() {
+    private List<LanguageCodeBaseSizeResponse> createExpectedResponse() {
         return List.of(
-                new LanguageCodeBaseSize("Java", 180),
-                new LanguageCodeBaseSize("Python", 60),
-                new LanguageCodeBaseSize("Scala", 3));
+                new LanguageCodeBaseSizeResponse("Java", 180),
+                new LanguageCodeBaseSizeResponse("Python", 60),
+                new LanguageCodeBaseSizeResponse("Scala", 3));
     }
 
     private ResponseEntity<RepositoryLanguageDetails[]> createResponseEntity() {

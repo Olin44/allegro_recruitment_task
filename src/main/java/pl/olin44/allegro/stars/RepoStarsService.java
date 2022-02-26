@@ -12,18 +12,22 @@ public class RepoStarsService {
 
     private final ExternalSource<AllegroRepoStars> externalSource;
 
-    public List<RepoStarsResponse> getReposStars() {
-        return externalSource.getAll(AllegroRepoStars[].class).stream()
+    public List<RepoStarsResponse> getReposStars(String userName) {
+        return externalSource.getAll(getRequestedEntityClass(), userName).stream()
                 .map(this::mapToRepoStars)
                 .toList();
+    }
+
+    private Class<AllegroRepoStars[]> getRequestedEntityClass() {
+        return AllegroRepoStars[].class;
     }
 
     private RepoStarsResponse mapToRepoStars(AllegroRepoStars allegroRepoStars) {
         return new RepoStarsResponse(allegroRepoStars.getName(), allegroRepoStars.getStargazersCount());
     }
 
-    public int getRepoStarsSum() {
-        return externalSource.getAll(AllegroRepoStars[].class).stream()
+    public int getRepoStarsSum(String userName) {
+        return externalSource.getAll(getRequestedEntityClass(), userName).stream()
                 .mapToInt(AllegroRepoStars::getStargazersCount)
                 .sum();
     }

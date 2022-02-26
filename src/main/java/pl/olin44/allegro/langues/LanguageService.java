@@ -15,8 +15,8 @@ public class LanguageService {
 
     private final ExternalSource<RepositoryLanguageDetails> languageSource;
 
-    public List<LanguageCodeBaseSize> getLanguageSortedByByteSize() {
-        return languageSource.getAll(RepositoryLanguageDetails[].class)
+    public List<LanguageCodeBaseSizeResponse> getLanguageSortedByByteSize(String userName) {
+        return languageSource.getAll(RepositoryLanguageDetails[].class, userName)
                 .stream()
                 .collect(Collectors.groupingBy(RepositoryLanguageDetails::getLanguage))
                 .entrySet()
@@ -26,12 +26,12 @@ public class LanguageService {
                 .toList();
     }
 
-    private Comparator<LanguageCodeBaseSize> getResponseComparator() {
-        return Comparator.comparing(LanguageCodeBaseSize::getByteSize).reversed();
+    private Comparator<LanguageCodeBaseSizeResponse> getResponseComparator() {
+        return Comparator.comparing(LanguageCodeBaseSizeResponse::getByteSize).reversed();
     }
 
-    private LanguageCodeBaseSize createResponse(Map.Entry<String, List<RepositoryLanguageDetails>> allegroLanguages) {
-        return new LanguageCodeBaseSize(allegroLanguages.getKey(), getBytesSum(allegroLanguages.getValue()));
+    private LanguageCodeBaseSizeResponse createResponse(Map.Entry<String, List<RepositoryLanguageDetails>> allegroLanguages) {
+        return new LanguageCodeBaseSizeResponse(allegroLanguages.getKey(), getBytesSum(allegroLanguages.getValue()));
     }
 
     private int getBytesSum(List<RepositoryLanguageDetails> repositoryLanguageDetails) {

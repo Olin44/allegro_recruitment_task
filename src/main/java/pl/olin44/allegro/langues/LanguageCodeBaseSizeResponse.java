@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class LanguageCodeBaseSize {
+public class LanguageCodeBaseSizeResponse {
     private String language;
     private int byteSize;
 }

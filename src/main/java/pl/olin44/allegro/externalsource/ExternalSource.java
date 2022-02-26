@@ -18,7 +18,7 @@ public class ExternalSource<T> {
 
     private static final String EXTERNAL_ERROR_MESSAGE_PATTERN = "External error occurred %s";
 
-    public static final String ALLEGRO_REPOS_URL = "https://api.github.com/orgs/allegro/repos";
+    public static final String REPOS_URL_TEMPLATE = "https://api.github.com/users/%s/repos";
 
     private final Logger logger = LoggerFactory.getLogger(ExternalSource.class);
 
@@ -28,8 +28,8 @@ public class ExternalSource<T> {
         this.restTemplate = restTemplate;
     }
 
-    public List<T> getAll(Class<T[]> requestedEntityClass) {
-        ResponseEntity<T[]> response = getResponse(requestedEntityClass);
+    public List<T> getAll(Class<T[]> requestedEntityClass, String userName) {
+        ResponseEntity<T[]> response = getResponse(requestedEntityClass, userName);
         if (response.getStatusCode() != HttpStatus.OK) {
             String externalErrorMessage = getExternalErrorMessage(response.getStatusCode().toString());
             logger.error(externalErrorMessage);
@@ -41,17 +41,21 @@ public class ExternalSource<T> {
     }
 
     private String getExternalErrorMessage(String errorSource) {
-        return EXTERNAL_ERROR_MESSAGE_PATTERN.formatted(errorSource);
+        return format(EXTERNAL_ERROR_MESSAGE_PATTERN, errorSource);
     }
 
-    private ResponseEntity<T[]> getResponse(Class<T[]> requestedEntityClass) {
+    private ResponseEntity<T[]> getResponse(Class<T[]> requestedEntityClass, String userName) {
         try {
-            return restTemplate.getForEntity(ALLEGRO_REPOS_URL, requestedEntityClass);
+            return restTemplate.getForEntity(format(REPOS_URL_TEMPLATE, userName), requestedEntityClass);
         } catch (RestClientException restClientException) {
             String externalErrorMessage = getExternalErrorMessage(restClientException.getMessage());
             logger.error(externalErrorMessage);
             throw new ExternalServerException(externalErrorMessage,
                     restClientException);
         }
+    }
+
+    private String format(String template, String... args) {
+        return template.formatted((Object[]) args);
     }
 }
