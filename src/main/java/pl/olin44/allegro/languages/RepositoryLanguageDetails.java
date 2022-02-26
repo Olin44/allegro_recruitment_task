@@ -1,11 +1,11 @@
-package pl.olin44.allegro.langues;
+package pl.olin44.allegro.languages;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class LanguageCodeBaseSizeResponse {
+public class RepositoryLanguageDetails {
     private String language;
-    private int byteSize;
+    private int size;
 }

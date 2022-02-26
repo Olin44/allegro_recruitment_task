@@ -16,9 +16,9 @@ import java.util.Optional;
 @Repository
 public class ExternalSource<T> {
 
-    private static final String EXTERNAL_ERROR_MESSAGE_PATTERN = "External error occurred %s";
-
     public static final String REPOS_URL_TEMPLATE = "https://api.github.com/users/%s/repos";
+
+    private static final String EXTERNAL_ERROR_MESSAGE_PATTERN = "External error occurred %s";
 
     private final Logger logger = LoggerFactory.getLogger(ExternalSource.class);
 

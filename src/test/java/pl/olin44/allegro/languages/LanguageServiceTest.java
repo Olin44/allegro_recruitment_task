@@ -1,4 +1,4 @@
-package pl.olin44.allegro.langues;
+package pl.olin44.allegro.languages;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

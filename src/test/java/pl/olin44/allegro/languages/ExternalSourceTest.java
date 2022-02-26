@@ -1,4 +1,4 @@
-package pl.olin44.allegro.langues;
+package pl.olin44.allegro.languages;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ public class ExternalSourceTest {
     ExternalSource<String> externalSource;
 
     @BeforeEach
-    void beforeEach(){
+    void beforeEach() {
         externalSource = new ExternalSource<>(restTemplate);
     }
 

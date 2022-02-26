@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class AllegroApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AllegroApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(AllegroApplication.class, args);
+    }
 
 }
